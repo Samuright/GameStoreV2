@@ -103,11 +103,16 @@
             .bestseller-card:hover {
                 transform: translateY(-5px);
             }
-
+            
             .game-img {
-                height: 100%;
-                object-fit: cover;
-                width: 100%;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                padding: 9%;
+                 border: 5px solid white; /* Viền trắng dày 5px */
+    border-radius: 10px; /* Bo tròn viền (tuỳ chỉnh) */
+                object-fit: contain; /* Cover the container while maintaining aspect ratio */
+                object-position: center;
+                transition: transform 0.3s ease; /* Smooth zoom effect on hover */
             }
 
             .game-details {
@@ -201,16 +206,12 @@
             .image-container {
                 position: relative;
                 width: 100%; /* Full width of the parent */
-                height: 200px; /* Set a fixed height */
+                height: 300px; /* Set a fixed height */
                 overflow: hidden; /* Hide overflow */
+                border-radius: 8px 8px 0 0; /* Rounded corners on top only */
             }
 
-            .game-img {
-                width: 100%; /* Full width */
-                height: 100%; /* Full height */
-                object-fit: cover; /* Cover the container while maintaining aspect ratio */
-
-            }
+            
 
         </style>
     </head>
@@ -264,79 +265,73 @@
             </div>
         </div>
 
-        <!-- Best Sellers Section -->
-        <div class="container mb-5">
-            <h2 class="section-title mb-4">BEST SELLERS</h2>
+ <!-- Best Sellers Section -->
+<div class="container mb-5">
+    <h2 class="section-title mb-4">BEST SELLERS</h2>
 
-            <div class="row">
-                <!-- All four games in one row using Bootstrap's grid system -->
-                <!--first game-->
-                <div class="col-md-3 mb-4">
-                    <div class="bestseller-card">                                   
-                        <div class="image-container">
-                            <img src="img/Doom.jpeg" alt="Southwest" class="game-img">
-                        </div>                                        
-                        <div class="game-details text-center">
-                            <div>
-                                
-                                <h3 class="game-title">Southwest</h3>
-                                <p class="game-price">$29.99</p>
-                            </div>
-                            <button class="btn btn-primary">BUY NOW</button>
-                        </div>
+    <div class="row">
+        <!-- First game - Dark Ages -->
+        <div class="col-md-3 mb-4">
+            <div class="bestseller-card">                                   
+                <div class="image-container">
+                    <img src="img/Doom.jpeg" alt="Dark Ages" class="game-img">
+                </div>                                        
+                <div class="game-details text-center">
+                    <div>
+                        <h3 class="game-title">Dark Ages</h3>
+                        <p class="game-price">$29.99</p>
                     </div>
-                </div>
-                <!--Second game-->
-                <div class="col-md-3 mb-4">
-                    <div class="bestseller-card">                                   
-                        <div class="image-container">
-                            <img src="img/spiderman2.png" alt="Southwest" class="game-img">
-                        </div>                                        
-                        <div class="game-details text-center">
-                            <div>
-                                
-                                <h3 class="game-title">Southwest</h3>
-                                <p class="game-price">$29.99</p>
-                            </div>
-                            <button class="btn btn-primary">BUY NOW</button>
-                        </div>
-                    </div>
-                </div>
-                <!--Third game-->
-                <div class="col-md-3 mb-4">
-                    <div class="bestseller-card">                                   
-                        <div class="image-container">
-                            <img src="img/Doom.jpeg" alt="Southwest" class="game-img">
-                        </div>                                        
-                        <div class="game-details text-center">
-                            <div>
-                                
-                                <h3 class="game-title">Southwest</h3>
-                                <p class="game-price">$29.99</p>
-                            </div>
-                            <button class="btn btn-primary">BUY NOW</button>
-                        </div>
-                    </div>
-                </div>
-                <!--fourth game-->
-                <div class="col-md-3 mb-4">
-                    <div class="bestseller-card">                                   
-                        <div class="image-container">
-                            <img src="img/Doom.jpeg" alt="Southwest" class="game-img">
-                        </div>                                        
-                        <div class="game-details text-center">
-                            <div>
-                                
-                                <h3 class="game-title">Southwest</h3>
-                                <p class="game-price">$29.99</p>
-                            </div>
-                            <button class="btn btn-primary">BUY NOW</button>
-                        </div>
-                    </div>
+                    <button class="btn btn-primary">BUY NOW</button>
                 </div>
             </div>
         </div>
-
+        <!-- Second game - Spider-Man 2 -->
+        <div class="col-md-3 mb-4">
+            <div class="bestseller-card">                                   
+                <div class="image-container">
+                    <img src="img/spiderman2.png" alt="Spider-Man 2" class="game-img">
+                </div>                                        
+                <div class="game-details text-center">
+                    <div>
+                        <h3 class="game-title">Spider-Man 2</h3>
+                        <p class="game-price">$59.99</p>
+                    </div>
+                    <button class="btn btn-primary">BUY NOW</button>
+                </div>
+            </div>
+        </div>
+        <!-- Third game - Dark Ages Expansion -->
+        <div class="col-md-3 mb-4">
+            <div class="bestseller-card">                                   
+                <div class="image-container">
+                    <img src="img/Doom.jpeg" alt="Dark Ages Expansion" class="game-img">
+                </div>                                        
+                <div class="game-details text-center">
+                    <div>
+                        <h3 class="game-title">Dark Ages Expansion</h3>
+                        <p class="game-price">$19.99</p>
+                    </div>
+                    <button class="btn btn-primary">BUY NOW</button>
+                </div>
+            </div>
+        </div>
+        <!-- Fourth game - Dark Ages Deluxe -->
+        <div class="col-md-3 mb-4">
+            <div class="bestseller-card">                                   
+                <div class="image-container">
+                    <img src="img/Doom.jpeg" alt="Dark Ages Deluxe" class="game-img">
+                </div>                                        
+                <div class="game-details text-center">
+                    <div>
+                        <h3 class="game-title">Dark Ages Deluxe</h3>
+                        <p class="game-price">$39.99</p>
+                    </div>
+                    <button class="btn btn-primary">BUY NOW</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
  <!-- Coming Soon Section -->
