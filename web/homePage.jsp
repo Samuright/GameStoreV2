@@ -105,12 +105,10 @@
             }
             
             .game-img {
-                width: 100%; /* Full width */
-                height: 100%; /* Full height */
+                width: 100%;
+                height: 100%;
                 padding: 9%;
-                 border: 5px solid white; /* Viền trắng dày 5px */
-    border-radius: 10px; /* Bo tròn viền (tuỳ chỉnh) */
-                object-fit: contain; /* Cover the container while maintaining aspect ratio */
+                object-fit: contain;
                 object-position: center;
                 transition: transform 0.3s ease; /* Smooth zoom effect on hover */
             }
