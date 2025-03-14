@@ -20,6 +20,7 @@
                 font-family: "Press Start 2P", system-ui;
                 font-weight: 400;
                 font-style: normal;
+                 letter-spacing: -1px;
             }
 
             body {
@@ -59,7 +60,7 @@
                 font-style: normal;
                 font-size: 32px;
                 margin-bottom: 30px;
-                letter-spacing: 5px;
+                letter-spacing: 1px;
             }
 
             .form-container {
@@ -145,17 +146,7 @@
 
     </head>
     <body>
-        <%
-            if (request.getAttribute("ERROR") != null) {
-        %>
-        <h3><%= request.getAttribute("ERROR")%></h3>
-        <%
-        } else if (request.getAttribute("NOTI") != null) {
 
-        %>
-        <h3>${requestScope.NOTI}</h3>
-        <%        }
-        %>
 
         <div class="header">
             <div class="logo">DKEY</div>
@@ -173,6 +164,19 @@
                     </div>
                     <div class="form-group">
                         <input type ="text" name ="txtpassword" placeholder="Password" required=""/>
+                    </div>
+                    <div >
+                        <%
+                            if (request.getAttribute("ERROR") != null) {
+                        %>
+                        <h3 class="title" style="font-size: 8px;"><%= request.getAttribute("ERROR")%></h3>
+                        <%
+                        } else if (request.getAttribute("NOTI") != null) {
+
+                        %>
+                        <h3 class="title" style="font-size: 10px;">${requestScope.NOTI}</h3>
+                        <%        }
+                        %>
                     </div>
                     <div class="title" style="text-align:center; ">
                         <input type="submit" value="Login" class="submit-btn"/>
