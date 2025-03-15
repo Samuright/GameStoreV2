@@ -3,8 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/FPTU/SemesterIV/PRJ301/GameShopV2/web/homePage.jsp</file>
-            <file>file:/D:/FPTU/SemesterIV/PRJ301/GameShopV2/web/registerPage.jsp</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/web/homePage.jsp</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/src/java/model/GenreDTO.java</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/src/java/controller/MainController.java</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/web/index.html</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/src/java/dao/GameDAO.java</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/web/gameManagement.jsp</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/web/top5.jsp</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/src/java/model/GameDTO.java</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/src/java/model/UsersDTO.java</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/src/java/dao/GenresDAO.java</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/src/java/dao/UsersDAO.java</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/web/login.jsp</file>
+            <file>file:/D:/FPT_kỳ_4/PRJ301/GameStoreV2/web/registerPage.jsp</file>
         </group>
     </open-files>
 </project-private>
