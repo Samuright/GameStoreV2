@@ -43,7 +43,7 @@ public class GameDAO {
                         String releaseDate = table.getString("releaseDate") + "";
                         String coverImageUrl = table.getString("coverImageUrl");
                         int isDlc = table.getInt("isDlc");
-                        GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl,isDlc);
+                        GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl, isDlc);
                         listGame.add(game);
                     }
                 }
@@ -62,6 +62,7 @@ public class GameDAO {
 
         return listGame;
     }
+
     public ArrayList<GameDTO> loadTop5() {
         ArrayList<GameDTO> listGame = new ArrayList<>();
         Connection con = null;
@@ -70,11 +71,11 @@ public class GameDAO {
             if (con != null) {
                 String sql = "SELECT top 5 gameId, title, description, price, publisher, releaseDate, coverImageUrl, isDlc from games ORDER BY price DESC ";
                 PreparedStatement st = con.prepareStatement(sql);
-                
+
                 ResultSet table = st.executeQuery();
                 if (table != null) {
                     while (table.next()) {
-                        
+
                         String gameId = table.getString("gameId");
                         String title = table.getString("title");
                         String description = table.getString("description");
@@ -82,7 +83,7 @@ public class GameDAO {
                         String publisher = table.getString("publisher");
                         String releaseDate = table.getString("releaseDate") + "";
                         String coverImageUrl = table.getString("coverImageUrl");
-  
+
                         int isDlc = table.getInt("isDlc");
                         GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl, isDlc);
                         listGame.add(game);
@@ -91,8 +92,67 @@ public class GameDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } 
-            
+        }
+
         return listGame;
+    }
+
+    public boolean addGame(GameDTO game, ArrayList<Integer> genreIds) throws SQLException {
+        Connection cn = null;
+        PreparedStatement st = null;
+        boolean success = false;
+
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                // Chèn vào bảng games
+                String sql = "INSERT INTO games (title, description, price, coverImageUrl, minSpec, maxSpec, publisher, releaseDate, isDlc) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                st = cn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                st.setString(1, game.getTitle());
+                st.setString(2, game.getDescription());
+                st.setDouble(3, game.getPrice());
+                st.setString(4, game.getCoverImageUrl());
+                st.setString(5, game.getMinSpec());
+                st.setString(6, game.getMaxSpec());
+                st.setString(7, game.getPublisher());
+                st.setDate(8, game.getReleaseDate());
+                st.setInt(9, game.getIsDlc());
+                int rows = st.executeUpdate();
+
+                if (rows > 0) {
+                    // Lấy gameId vừa tạo
+                    try (ResultSet rs = st.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            int gameId = rs.getInt(1);
+                            game.setGameId(gameId);
+
+                            // Chèn vào bảng games_genres
+                            if (genreIds != null && !genreIds.isEmpty()) {
+                                String sqlGenre = "INSERT INTO games_genres (gameId, genreId) VALUES (?, ?)";
+                                st = cn.prepareStatement(sqlGenre);
+                                for (Integer genreId : genreIds) {
+                                    st.setInt(1, gameId);
+                                    st.setInt(2, genreId);
+                                    st.executeUpdate();
+                                }
+                            }
+                            success = true;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (cn != null) {
+                cn.close();
+            }
+        }
+        return success;
     }
 }

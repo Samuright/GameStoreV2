@@ -1,30 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
-/**
- *
- * @author Quoc Bao
- */
-public class GameDTO implements Serializable{
-    private String gameId;
+public class GameDTO implements Serializable {
+
+    private int gameId; // Sử dụng int vì gameId thường là số tự tăng
     private String title;
     private String description;
-    private String price;
+    private double price;
     private String publisher;
-    private String releaseDate;
+    private Date releaseDate; // Dạng chuỗi, có thể dùng định dạng "yyyy-MM-dd"
     private String coverImageUrl;
-    private int isDlc;
+    private int isDlc; // 0: không phải DLC, 1: là DLC
+    private String minSpec;
+    private String maxSpec;
 
+    // Constructor mặc định
     public GameDTO() {
     }
 
-    public GameDTO(String gameId, String title, String description, String price, String publisher, String releaseDate, String coverImageUrl, int isDlc) {
+    // Constructor đầy đủ
+    public GameDTO(int gameId, String title, String description, double price, String publisher,
+            Date releaseDate, String coverImageUrl, int isDlc, String minSpec, String maxSpec) {
         this.gameId = gameId;
         this.title = title;
         this.description = description;
@@ -32,15 +30,21 @@ public class GameDTO implements Serializable{
         this.publisher = publisher;
         this.releaseDate = releaseDate;
         this.coverImageUrl = coverImageUrl;
-
         this.isDlc = isDlc;
+        this.minSpec = minSpec;
+        this.maxSpec = maxSpec;
     }
-    
-    public String getGameId() {
+
+    public GameDTO(String gameId, String title, String description, String price, String publisher, String releaseDate, String coverImageUrl, int dlc) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    // Getters và Setters
+    public int getGameId() {
         return gameId;
     }
 
-    public void setGameId(String gameId) {
+    public void setGameId(int gameId) {
         this.gameId = gameId;
     }
 
@@ -60,28 +64,29 @@ public class GameDTO implements Serializable{
         this.description = description;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getPublisher() {
-        return publisher;
     }
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 
-    public String getReleaseDate() {
-        return releaseDate;
+    
+    public String getPublisher() {
+        return publisher;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
     }
 
     public String getCoverImageUrl() {
@@ -92,7 +97,6 @@ public class GameDTO implements Serializable{
         this.coverImageUrl = coverImageUrl;
     }
 
-
     public int getIsDlc() {
         return isDlc;
     }
@@ -100,6 +104,22 @@ public class GameDTO implements Serializable{
     public void setIsDlc(int isDlc) {
         this.isDlc = isDlc;
     }
-    
-    
+
+    public String getMinSpec() {
+        return minSpec;
+    }
+
+    public void setMinSpec(String minSpec) {
+        this.minSpec = minSpec;
+    }
+
+    public String getMaxSpec() {
+        return maxSpec;
+    }
+
+    public void setMaxSpec(String maxSpec) {
+        this.maxSpec = maxSpec;
+    }
+
+
 }
