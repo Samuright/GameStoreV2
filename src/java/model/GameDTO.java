@@ -10,20 +10,8 @@ public class GameDTO implements Serializable {
     private String description;
     private double price;
     private String publisher;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    private Date releaseDate; // Dạng chuỗi, có thể dùng định dạng "yyyy-MM-dd"
-    private String coverImageUrl;
-    private int isDlc; // 0: không phải DLC, 1: là DLC
-    private String minSpec;
-    private String maxSpec;
-=======
     private Date releaseDate;
     private String coverImageUrl;
-=======
-    private Date releaseDate;
-    private String coverImageUrl;
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
     private String trailerImageUrl;
     private int isDlc;
     private String platform;
@@ -31,26 +19,14 @@ public class GameDTO implements Serializable {
     private String minSpec;
     private String maxSpec;
     private String screenshot;
-<<<<<<< HEAD
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
-=======
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
+
 
     // Constructor mặc định
     public GameDTO() {
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    // Constructor đầy đủ
-    public GameDTO(int gameId, String title, String description, double price, String publisher,
-            Date releaseDate, String coverImageUrl, int isDlc, String minSpec, String maxSpec) {
-=======
-    public GameDTO(String gameId, String title, String description, double price, String publisher, Date releaseDate, String coverImageUrl, String trailerImageUrl, int isDlc, String platform, String platformLogo, String minSpec, String maxSpec, String screenshot) {
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
-=======
-    public GameDTO(String gameId, String title, String description, double price, String publisher, Date releaseDate, String coverImageUrl, String trailerImageUrl, int isDlc, String platform, String platformLogo, String minSpec, String maxSpec, String screenshot) {
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
+   
+    public GameDTO(int gameId, String title, String description, double price, String publisher, Date releaseDate, String coverImageUrl, String trailerImageUrl, int isDlc, String platform, String platformLogo, String minSpec, String maxSpec, String screenshot) {
         this.gameId = gameId;
         this.title = title;
         this.description = description;
@@ -58,42 +34,16 @@ public class GameDTO implements Serializable {
         this.publisher = publisher;
         this.releaseDate = releaseDate;
         this.coverImageUrl = coverImageUrl;
-<<<<<<< HEAD
-<<<<<<< HEAD
+        this.trailerImageUrl = trailerImageUrl;
         this.isDlc = isDlc;
+        this.platform = platform;
+        this.platformLogo = platformLogo;
         this.minSpec = minSpec;
         this.maxSpec = maxSpec;
+        this.screenshot = screenshot;
     }
 
-    public GameDTO(String gameId, String title, String description, String price, String publisher, String releaseDate, String coverImageUrl, int dlc) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    // Getters và Setters
     public int getGameId() {
-=======
-        this.trailerImageUrl = trailerImageUrl;
-        this.isDlc = isDlc;
-        this.platform = platform;
-        this.platformLogo = platformLogo;
-        this.minSpec = minSpec;
-        this.maxSpec = maxSpec;
-        this.screenshot = screenshot;
-    }
-
-=======
-        this.trailerImageUrl = trailerImageUrl;
-        this.isDlc = isDlc;
-        this.platform = platform;
-        this.platformLogo = platformLogo;
-        this.minSpec = minSpec;
-        this.maxSpec = maxSpec;
-        this.screenshot = screenshot;
-    }
-
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
-    public String getGameId() {
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
         return gameId;
     }
 
@@ -129,26 +79,15 @@ public class GameDTO implements Serializable {
         this.publisher = publisher;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    
-    public String getPublisher() {
-        return publisher;
-=======
-=======
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
+
     public Date getReleaseDate() {
         return releaseDate;
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
     }
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
 
     public String getCoverImageUrl() {
         return coverImageUrl;
@@ -157,28 +96,12 @@ public class GameDTO implements Serializable {
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
     }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     public String getTrailerImageUrl() {
         return trailerImageUrl;
     }
-=======
-    public String getTrailerImageUrl() {
-        return trailerImageUrl;
-    }
-
     public void setTrailerImageUrl(String trailerImageUrl) {
         this.trailerImageUrl = trailerImageUrl;
     }
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
-
-    public void setTrailerImageUrl(String trailerImageUrl) {
-        this.trailerImageUrl = trailerImageUrl;
-    }
-
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
     public int getIsDlc() {
         return isDlc;
     }
@@ -187,11 +110,6 @@ public class GameDTO implements Serializable {
         this.isDlc = isDlc;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
     public String getPlatform() {
         return platform;
     }
@@ -208,10 +126,6 @@ public class GameDTO implements Serializable {
         this.platformLogo = platformLogo;
     }
 
-<<<<<<< HEAD
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
-=======
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
     public String getMinSpec() {
         return minSpec;
     }
@@ -228,12 +142,6 @@ public class GameDTO implements Serializable {
         this.maxSpec = maxSpec;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-=======
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
     public String getScreenshot() {
         return screenshot;
     }
@@ -242,9 +150,4 @@ public class GameDTO implements Serializable {
         this.screenshot = screenshot;
     }
 
-   
-<<<<<<< HEAD
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
-=======
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
 }

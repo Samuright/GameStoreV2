@@ -76,15 +76,6 @@ public class GameDAO {
                 ResultSet table = st.executeQuery();
                 if (table != null) {
                     while (table.next()) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-                       
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
-=======
-                       
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
                         String gameId = table.getString("gameId");
                         String title = table.getString("title");
                         String description = table.getString("description");
@@ -92,13 +83,6 @@ public class GameDAO {
                         String publisher = table.getString("publisher");
                         Date releaseDate = table.getDate("releaseDate");
                         String coverImageUrl = table.getString("coverImageUrl");
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
-=======
->>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
                         int isDlc = table.getInt("isDlc");
                         GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl,isDlc);
                         listGame.add(game);
@@ -107,6 +91,48 @@ public class GameDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        return listGame;
+    }
+     public ArrayList<GameDTO> listBestSeller() {
+        ArrayList<GameDTO> listGame = new ArrayList<>();
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT TOP (4) COUNT(orderItems.gameId) AS [COUNT], games.gameId, title, description, price, publisher, releaseDate, coverImageUrl, trailerUrl, isDlc\n"
+                        + "FROM games JOIN orderItems ON games.gameId = orderItems.gameId\n"
+                        + "GROUP BY games.gameId, title, description, price, publisher, releaseDate, coverImageUrl, trailerUrl, isDlc\n"
+                        + "ORDER BY [COUNT] DESC";
+                PreparedStatement st = cn.prepareStatement(sql);
+                ResultSet table = st.executeQuery();
+                if (table != null) {
+                    while (table.next()) {
+                        String title = table.getString("title");
+                        String gameId = table.getString("gameId");
+                        String description = table.getString("description");
+                        String price = table.getString("price");
+                        String publisher = table.getString("publisher");
+                        String releaseDate = table.getString("releaseDate") + "";
+                        String coverImageUrl = table.getString("coverImageUrl");
+                        String trailerUrl = table.getString("trailerUrl");
+                        int isDlc = table.getInt("isDlc");
+                        GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl, trailerUrl, isDlc);
+                        listGame.add(game);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cn != null) {
+                try {
+                    cn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
 
         return listGame;
