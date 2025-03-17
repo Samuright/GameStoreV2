@@ -58,10 +58,14 @@
                 <div class="form-group">
                     <label>Thể loại</label>
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <select multiple name="genres" required>
 =======
                     <select multiple name="genre" required>
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+                    <select multiple name="genre" required>
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
                         <c:forEach var="genre" items="${genreList}">
                             <option value="${genre.genreId}">${genre.genreName}</option>
                         </c:forEach>

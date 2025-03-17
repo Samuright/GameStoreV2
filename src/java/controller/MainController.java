@@ -13,8 +13,11 @@ import dao.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+<<<<<<< HEAD
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+=======
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,11 +36,18 @@ public class MainController extends HttpServlet {
 
     private static final String LOGIN_PAGE = "login.jsp";
     private static final String HOME_PAGE = "homePage.jsp";
+<<<<<<< HEAD
     private static final String REGITSER_PAGE = "registerPage.jsp";
     private static final String GAME_MANAGEMENT_PAGE = "gameManagement.jsp";
     private static final String USER_PAGE = "userPage.jsp";
     private static final String EDIT_USER_PAGE = "editUser.jsp";
 
+=======
+    private static final String REGISTER_PAGE = "registerPage.jsp";
+    private static final String USER_PAGE = "userPage.jsp";
+    private static final String EDIT_USER_PAGE = "editUser.jsp";
+    private static final String GAME_MANAGEMENT_PAGE = "GAME_MANAGEMENT_PAGE";
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -55,6 +65,7 @@ public class MainController extends HttpServlet {
                         url = processLogout(request, response);
                         break;
                     case "register":
+<<<<<<< HEAD
                         url = REGITSER_PAGE;
                         break;
                     case "insertNewUser":
@@ -72,6 +83,28 @@ public class MainController extends HttpServlet {
                         break;
                     default:
 
+=======
+                        url = processRegister(request,response);
+                        break;                    
+                    case "detail":
+                        url = processGameDetail(request, response);
+                        break;
+                    case "listUser":
+                        url = processListUser(request, response);
+                        break;
+
+                    case "editUser":
+                        url = processUserEdit(request, response);
+                        break;
+                    case "update":
+                        url = processUpdateUser(request, response);
+                        break;
+                    case"loadtop5":
+                        processTop5Sell(request,response);
+                        url="top5.jsp";
+                        
+                    default: 
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
                 }
             }
 
@@ -123,6 +156,10 @@ public class MainController extends HttpServlet {
         UsersDAO d = new UsersDAO();
         UsersDTO user = new UsersDTO();
         UsersDTO checkUser = d.getUserSaved(email);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
         if (checkUser != null) {
             request.setAttribute("ERROR", "User email existed");
             return url;
@@ -165,14 +202,20 @@ public class MainController extends HttpServlet {
             url = USER_PAGE;
         } else {
             request.setAttribute("ERROR", "User empty!");
+<<<<<<< HEAD
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
         }
         return url;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     protected String processList(HttpServletRequest request, HttpServletResponse response) {
 =======
+=======
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
     protected String processUserEdit(HttpServletRequest request, HttpServletResponse response){
         String oldMail = request.getParameter("oldEmail");
         UsersDTO user = new UsersDTO();
@@ -247,7 +290,10 @@ public class MainController extends HttpServlet {
     
     
     protected String processGameList(HttpServletRequest request, HttpServletResponse response){
+<<<<<<< HEAD
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
         String title = "";
         String url = LOGIN_PAGE;
         GameDAO d = new GameDAO();
@@ -280,6 +326,7 @@ public class MainController extends HttpServlet {
                 return LOGIN_PAGE;
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             // Lấy danh sách thể loại từ GenresDAO
             GenresDAO genresDAO = new GenresDAO();
@@ -287,12 +334,17 @@ public class MainController extends HttpServlet {
             if (genreList == null || genreList.isEmpty()) {
                 request.setAttribute("NOTI", "No genres available. Please add genres first!");
 =======
+=======
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
             // Lấy danh sách thể loại từ genreDAO
             GenreDAO genreDAO = new GenreDAO();
             ArrayList<GenreDTO> genreList = genreDAO.getAllgenre();
             if (genreList == null || genreList.isEmpty()) {
                 request.setAttribute("NOTI", "No genre available. Please add genre first!");
+<<<<<<< HEAD
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
             } else {
                 request.setAttribute("genreList", genreList); // Lưu danh sách thể loại vào request
             }
@@ -322,10 +374,14 @@ public class MainController extends HttpServlet {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             String[] genreIdsStr = request.getParameterValues("genres");
 =======
             String[] genreIdsStr = request.getParameterValues("genre");
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+            String[] genreIdsStr = request.getParameterValues("genre");
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
             if (genreIdsStr == null || genreIdsStr.length == 0) {
                 request.setAttribute("NOTI", "Phải chọn ít nhất một thể loại!");
                 return url;
@@ -385,12 +441,17 @@ public class MainController extends HttpServlet {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             GenresDAO genresDAO = new GenresDAO();
             request.setAttribute("genreList", genresDAO.getAllGenres());
 =======
             GenreDAO genreDAO = new GenreDAO();
             request.setAttribute("genreList", genreDAO.getAllgenre());
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+            GenreDAO genreDAO = new GenreDAO();
+            request.setAttribute("genreList", genreDAO.getAllgenre());
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
 
         } catch (Exception e) {
             request.setAttribute("NOTI", "Lỗi: " + e.getMessage());
@@ -400,9 +461,13 @@ public class MainController extends HttpServlet {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

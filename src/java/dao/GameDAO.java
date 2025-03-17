@@ -77,10 +77,14 @@ public class GameDAO {
                 if (table != null) {
                     while (table.next()) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
                        
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+                       
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
                         String gameId = table.getString("gameId");
                         String title = table.getString("title");
                         String description = table.getString("description");
@@ -89,9 +93,12 @@ public class GameDAO {
                         Date releaseDate = table.getDate("releaseDate");
                         String coverImageUrl = table.getString("coverImageUrl");
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
+=======
+>>>>>>> 061598798e9a9dee30910cfeed677e163ab3a402
                         int isDlc = table.getInt("isDlc");
                         GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl,isDlc);
                         listGame.add(game);
