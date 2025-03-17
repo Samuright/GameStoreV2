@@ -6,6 +6,7 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 /**
  *
@@ -15,16 +16,22 @@ public class GameDTO implements Serializable{
     private String gameId;
     private String title;
     private String description;
-    private String price;
+    private double price;
     private String publisher;
-    private String releaseDate;
+    private Date releaseDate;
     private String coverImageUrl;
+    private String trailerImageUrl;
     private int isDlc;
+    private String platform;
+    private String platformLogo;
+    private String minSpec;
+    private String maxSpec;
+    private String screenshot;
 
     public GameDTO() {
     }
 
-    public GameDTO(String gameId, String title, String description, String price, String publisher, String releaseDate, String coverImageUrl, int isDlc) {
+    public GameDTO(String gameId, String title, String description, double price, String publisher, Date releaseDate, String coverImageUrl, String trailerImageUrl, int isDlc, String platform, String platformLogo, String minSpec, String maxSpec, String screenshot) {
         this.gameId = gameId;
         this.title = title;
         this.description = description;
@@ -32,10 +39,15 @@ public class GameDTO implements Serializable{
         this.publisher = publisher;
         this.releaseDate = releaseDate;
         this.coverImageUrl = coverImageUrl;
-
+        this.trailerImageUrl = trailerImageUrl;
         this.isDlc = isDlc;
+        this.platform = platform;
+        this.platformLogo = platformLogo;
+        this.minSpec = minSpec;
+        this.maxSpec = maxSpec;
+        this.screenshot = screenshot;
     }
-    
+
     public String getGameId() {
         return gameId;
     }
@@ -60,11 +72,11 @@ public class GameDTO implements Serializable{
         this.description = description;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -76,11 +88,11 @@ public class GameDTO implements Serializable{
         this.publisher = publisher;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -92,6 +104,13 @@ public class GameDTO implements Serializable{
         this.coverImageUrl = coverImageUrl;
     }
 
+    public String getTrailerImageUrl() {
+        return trailerImageUrl;
+    }
+
+    public void setTrailerImageUrl(String trailerImageUrl) {
+        this.trailerImageUrl = trailerImageUrl;
+    }
 
     public int getIsDlc() {
         return isDlc;
@@ -100,6 +119,46 @@ public class GameDTO implements Serializable{
     public void setIsDlc(int isDlc) {
         this.isDlc = isDlc;
     }
-    
-    
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public String getPlatformLogo() {
+        return platformLogo;
+    }
+
+    public void setPlatformLogo(String platformLogo) {
+        this.platformLogo = platformLogo;
+    }
+
+    public String getMinSpec() {
+        return minSpec;
+    }
+
+    public void setMinSpec(String minSpec) {
+        this.minSpec = minSpec;
+    }
+
+    public String getMaxSpec() {
+        return maxSpec;
+    }
+
+    public void setMaxSpec(String maxSpec) {
+        this.maxSpec = maxSpec;
+    }
+
+    public String getScreenshot() {
+        return screenshot;
+    }
+
+    public void setScreenshot(String screenshot) {
+        this.screenshot = screenshot;
+    }
+
+   
 }

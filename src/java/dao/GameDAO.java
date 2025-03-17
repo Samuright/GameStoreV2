@@ -6,6 +6,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,9 +39,9 @@ public class GameDAO {
                         title = table.getString("title");
                         String gameId = table.getString("gameId");
                         String description = table.getString("description");
-                        String price = table.getString("price");
+                        double price = table.getDouble("price");
                         String publisher = table.getString("publisher");
-                        String releaseDate = table.getString("releaseDate") + "";
+                        Date releaseDate = table.getDate("releaseDate");
                         String coverImageUrl = table.getString("coverImageUrl");
                         int isDlc = table.getInt("isDlc");
                         GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl,isDlc);
@@ -74,17 +75,16 @@ public class GameDAO {
                 ResultSet table = st.executeQuery();
                 if (table != null) {
                     while (table.next()) {
-                        
+                       
                         String gameId = table.getString("gameId");
                         String title = table.getString("title");
                         String description = table.getString("description");
-                        String price = table.getString("price");
+                        double price = table.getDouble("price");
                         String publisher = table.getString("publisher");
-                        String releaseDate = table.getString("releaseDate") + "";
+                        Date releaseDate = table.getDate("releaseDate");
                         String coverImageUrl = table.getString("coverImageUrl");
-  
                         int isDlc = table.getInt("isDlc");
-                        GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl, isDlc);
+                        GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl,isDlc);
                         listGame.add(game);
                     }
                 }

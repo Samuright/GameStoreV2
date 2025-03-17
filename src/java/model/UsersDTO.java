@@ -17,21 +17,23 @@ public class UsersDTO {
     private String email;
     private String dateOfBirth;
     private int isAdmin;
-    private String address;
     private int isBlocked;
+    private double wallet;
+    private String userImg;
 
     public UsersDTO() {
     }
 
-    public UsersDTO(String username, String password, int userId, String email, String dateOfBirth, int isAdmin, String address, int isBlocked) {
+    public UsersDTO(String username, String password, int userId, String email, String dateOfBirth, int isAdmin, int isBlocked, double wallet, String userImg) {
         this.username = username;
         this.password = password;
         this.userId = userId;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.isAdmin = isAdmin;
-        this.address = address;
         this.isBlocked = isBlocked;
+        this.wallet = wallet;
+        this.userImg = userImg;
     }
 
     public String getUsername() {
@@ -48,6 +50,14 @@ public class UsersDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -74,14 +84,6 @@ public class UsersDTO {
         this.isAdmin = isAdmin;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public int getIsBlocked() {
         return isBlocked;
     }
@@ -90,12 +92,20 @@ public class UsersDTO {
         this.isBlocked = isBlocked;
     }
 
-    public int getUserId() {
-        return userId;
+    public double getWallet() {
+        return wallet;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setWallet(double wallet) {
+        this.wallet = wallet;
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 
     
