@@ -8,6 +8,8 @@ package controller;
 import dao.GameDAO;
 import dao.GenresDAO;
 import dao.UsersDAO;
+
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -31,8 +33,10 @@ public class MainController extends HttpServlet {
 
     private static final String LOGIN_PAGE = "login.jsp";
     private static final String HOME_PAGE = "homePage.jsp";
-    private static final String REGITER_PAGE = "registerPage.jsp";
+    private static final String REGITSER_PAGE = "registerPage.jsp";
     private static final String GAME_MANAGEMENT_PAGE = "gameManagement.jsp";
+    private static final String USER_PAGE = "userPage.jsp";
+    private static final String EDIT_USER_PAGE = "editUser.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,7 +55,7 @@ public class MainController extends HttpServlet {
                         url = processLogout(request, response);
                         break;
                     case "register":
-                        url = REGITER_PAGE;
+                        url = REGITSER_PAGE;
                         break;
                     case "insertNewUser":
                         url = processRegister(request, response);
@@ -67,6 +71,7 @@ public class MainController extends HttpServlet {
                         url = processAddGame(request, response);
                         break;
                     default:
+
                 }
             }
 
@@ -77,7 +82,7 @@ public class MainController extends HttpServlet {
         }
     }
 
-    protected String processLogin(HttpServletRequest request, HttpServletResponse response) {
+   protected String processLogin(HttpServletRequest request, HttpServletResponse response) {
         String url = LOGIN_PAGE;
         String title = "";
         String username = request.getParameter("txtmail");
@@ -89,7 +94,7 @@ public class MainController extends HttpServlet {
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                url = processList(request, response);
+                url = processBestSeller(request, response);
             } else {
                 request.setAttribute("ERROR", "Email or password invalid!");
             }
@@ -109,33 +114,140 @@ public class MainController extends HttpServlet {
     }
 
     protected String processRegister(HttpServletRequest request, HttpServletResponse response) {
-        String url = REGITER_PAGE;
+        String url = REGISTER_PAGE;
         String email = request.getParameter("txtmail");
         String username = request.getParameter("txtusername");
         String password = request.getParameter("txtpassword");
+        String passwordCheck = request.getParameter("txtpasscheck");
+        String dob = request.getParameter("txtdob");
         UsersDAO d = new UsersDAO();
         UsersDTO user = new UsersDTO();
+        UsersDTO checkUser = d.getUserSaved(email);
+        if (checkUser != null) {
+            request.setAttribute("ERROR", "User email existed");
+            return url;
+        }
 
-        int userId = d.getMaxID();
-        userId++;
+        if (password.equals(passwordCheck)) {
+            int userId = d.getMaxID();
+            userId++;
 
-        user.setUserId(userId);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setUsername(username);
-        user.setIsAdmin(0);
-        user.setIsBlocked(0);
-        user.setDateOfBirth("2005-09-20");
-        user.setAddress("o dau do");
+            user.setUserId(userId);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setUsername(username);
+            user.setIsAdmin(0);
+            user.setIsBlocked(0);
+            user.setDateOfBirth(dob);
+            user.setUserImg("");
+            user.setWallet(0);
 
-        if (d.addNewUser(user)) {
-            url = LOGIN_PAGE;
-            request.setAttribute("NOTI", "Register Successfully!");
+            if (d.addNewUser(user)) {
+                url = LOGIN_PAGE;
+                request.setAttribute("NOTI", "Register Successfully!");
+            }
+        } else {
+            request.setAttribute("ERROR", "Password not match!");
+            url = REGISTER_PAGE;
+        }
+
+        return url;
+    }
+
+    protected String processListUser(HttpServletRequest request, HttpServletResponse response) {
+        String url = HOME_PAGE;
+        String keyword = "";
+        ArrayList<UsersDTO> list = new ArrayList<>();
+        UsersDAO d = new UsersDAO();
+        list = d.listUser(keyword);
+        if (list != null && !list.isEmpty()) {
+            request.setAttribute("listUser", list);
+            url = USER_PAGE;
+        } else {
+            request.setAttribute("ERROR", "User empty!");
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
         }
         return url;
     }
 
+<<<<<<< HEAD
     protected String processList(HttpServletRequest request, HttpServletResponse response) {
+=======
+    protected String processUserEdit(HttpServletRequest request, HttpServletResponse response){
+        String oldMail = request.getParameter("oldEmail");
+        UsersDTO user = new UsersDTO();
+        UsersDAO d = new UsersDAO();
+        user = d.getUserSaved(oldMail);
+        request.setAttribute("userToUpdate", user);
+        return "editUser.jsp";
+    }
+    
+    protected String processUpdateUser(HttpServletRequest request, HttpServletResponse response) {
+        String url = USER_PAGE;
+        String date = request.getParameter("date");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String checkPassword = request.getParameter("checkPassword");
+        String username = request.getParameter("username");
+
+        String oldMail = request.getParameter("oldEmail");
+        UsersDAO d = new UsersDAO();
+        UsersDTO user = new UsersDTO();
+        user = d.getUserSaved(oldMail);
+        user.setDateOfBirth(date);
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setWallet(user.getWallet());
+        user.setIsBlocked(user.getIsBlocked());
+        user.setIsAdmin(user.getIsAdmin());
+        user.setUserImg(user.getUserImg());
+        
+        if(!password.equals(checkPassword)) {
+            url = processUserEdit(request, response);
+            request.setAttribute("ERROR", "Password not match!");
+            return url;
+        }
+        
+        if(d.updateUser(user, oldMail)){
+            url = processListUser(request, response);
+        }
+        
+        return url;
+    }
+    
+    protected String processBestSeller(HttpServletRequest request, HttpServletResponse response){
+        String url = LOGIN_PAGE;
+        ArrayList<GameDTO> list = new ArrayList<>();
+        GameDAO d = new GameDAO();
+        list = d.listBestSeller();
+        if (list != null && !list.isEmpty()) {
+            HttpSession session = request.getSession();
+            session.setAttribute("listGame", list);
+            url = HOME_PAGE;
+        } else {
+            request.setAttribute("ERROR", "List empty!");
+        }
+        return url;
+    }
+
+    protected String processGameDetail(HttpServletRequest request, HttpServletResponse response) {
+        String url = processGameList(request, response);
+        GameDAO d = new GameDAO();
+        ArrayList<GameDTO> game = null;
+        String title = request.getParameter("title");
+        game = d.list(title);
+        if (game != null) {
+            url = "gameDetail.jsp";
+            request.setAttribute("game", game);
+        }
+
+        return url;
+    }
+    
+    
+    protected String processGameList(HttpServletRequest request, HttpServletResponse response){
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
         String title = "";
         String url = LOGIN_PAGE;
         GameDAO d = new GameDAO();
@@ -167,12 +279,20 @@ public class MainController extends HttpServlet {
                 request.setAttribute("NOTI", "You must be an admin to access this page!");
                 return LOGIN_PAGE;
             }
+<<<<<<< HEAD
 
             // Lấy danh sách thể loại từ GenresDAO
             GenresDAO genresDAO = new GenresDAO();
             ArrayList<GenreDTO> genreList = genresDAO.getAllGenres();
             if (genreList == null || genreList.isEmpty()) {
                 request.setAttribute("NOTI", "No genres available. Please add genres first!");
+=======
+            // Lấy danh sách thể loại từ genreDAO
+            GenreDAO genreDAO = new GenreDAO();
+            ArrayList<GenreDTO> genreList = genreDAO.getAllgenre();
+            if (genreList == null || genreList.isEmpty()) {
+                request.setAttribute("NOTI", "No genre available. Please add genre first!");
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
             } else {
                 request.setAttribute("genreList", genreList); // Lưu danh sách thể loại vào request
             }
@@ -201,7 +321,11 @@ public class MainController extends HttpServlet {
                 return url;
             }
 
+<<<<<<< HEAD
             String[] genreIdsStr = request.getParameterValues("genres");
+=======
+            String[] genreIdsStr = request.getParameterValues("genre");
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
             if (genreIdsStr == null || genreIdsStr.length == 0) {
                 request.setAttribute("NOTI", "Phải chọn ít nhất một thể loại!");
                 return url;
@@ -260,8 +384,13 @@ public class MainController extends HttpServlet {
                 request.setAttribute("NOTI", "Thêm trò chơi thất bại!");
             }
 
+<<<<<<< HEAD
             GenresDAO genresDAO = new GenresDAO();
             request.setAttribute("genreList", genresDAO.getAllGenres());
+=======
+            GenreDAO genreDAO = new GenreDAO();
+            request.setAttribute("genreList", genreDAO.getAllgenre());
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
 
         } catch (Exception e) {
             request.setAttribute("NOTI", "Lỗi: " + e.getMessage());
@@ -270,6 +399,10 @@ public class MainController extends HttpServlet {
         return url;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

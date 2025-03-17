@@ -10,19 +10,35 @@ public class GameDTO implements Serializable {
     private String description;
     private double price;
     private String publisher;
+<<<<<<< HEAD
     private Date releaseDate; // Dạng chuỗi, có thể dùng định dạng "yyyy-MM-dd"
     private String coverImageUrl;
     private int isDlc; // 0: không phải DLC, 1: là DLC
     private String minSpec;
     private String maxSpec;
+=======
+    private Date releaseDate;
+    private String coverImageUrl;
+    private String trailerImageUrl;
+    private int isDlc;
+    private String platform;
+    private String platformLogo;
+    private String minSpec;
+    private String maxSpec;
+    private String screenshot;
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
 
     // Constructor mặc định
     public GameDTO() {
     }
 
+<<<<<<< HEAD
     // Constructor đầy đủ
     public GameDTO(int gameId, String title, String description, double price, String publisher,
             Date releaseDate, String coverImageUrl, int isDlc, String minSpec, String maxSpec) {
+=======
+    public GameDTO(String gameId, String title, String description, double price, String publisher, Date releaseDate, String coverImageUrl, String trailerImageUrl, int isDlc, String platform, String platformLogo, String minSpec, String maxSpec, String screenshot) {
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
         this.gameId = gameId;
         this.title = title;
         this.description = description;
@@ -30,6 +46,7 @@ public class GameDTO implements Serializable {
         this.publisher = publisher;
         this.releaseDate = releaseDate;
         this.coverImageUrl = coverImageUrl;
+<<<<<<< HEAD
         this.isDlc = isDlc;
         this.minSpec = minSpec;
         this.maxSpec = maxSpec;
@@ -41,6 +58,18 @@ public class GameDTO implements Serializable {
 
     // Getters và Setters
     public int getGameId() {
+=======
+        this.trailerImageUrl = trailerImageUrl;
+        this.isDlc = isDlc;
+        this.platform = platform;
+        this.platformLogo = platformLogo;
+        this.minSpec = minSpec;
+        this.maxSpec = maxSpec;
+        this.screenshot = screenshot;
+    }
+
+    public String getGameId() {
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
         return gameId;
     }
 
@@ -76,9 +105,14 @@ public class GameDTO implements Serializable {
         this.publisher = publisher;
     }
 
+<<<<<<< HEAD
     
     public String getPublisher() {
         return publisher;
+=======
+    public Date getReleaseDate() {
+        return releaseDate;
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
     }
 
     public void setReleaseDate(Date releaseDate) {
@@ -97,6 +131,17 @@ public class GameDTO implements Serializable {
         this.coverImageUrl = coverImageUrl;
     }
 
+<<<<<<< HEAD
+=======
+    public String getTrailerImageUrl() {
+        return trailerImageUrl;
+    }
+
+    public void setTrailerImageUrl(String trailerImageUrl) {
+        this.trailerImageUrl = trailerImageUrl;
+    }
+
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
     public int getIsDlc() {
         return isDlc;
     }
@@ -105,6 +150,25 @@ public class GameDTO implements Serializable {
         this.isDlc = isDlc;
     }
 
+<<<<<<< HEAD
+=======
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public String getPlatformLogo() {
+        return platformLogo;
+    }
+
+    public void setPlatformLogo(String platformLogo) {
+        this.platformLogo = platformLogo;
+    }
+
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
     public String getMinSpec() {
         return minSpec;
     }
@@ -121,5 +185,17 @@ public class GameDTO implements Serializable {
         this.maxSpec = maxSpec;
     }
 
+<<<<<<< HEAD
 
+=======
+    public String getScreenshot() {
+        return screenshot;
+    }
+
+    public void setScreenshot(String screenshot) {
+        this.screenshot = screenshot;
+    }
+
+   
+>>>>>>> 0615987 (Thêm tính năng user, sửa GameDTO)
 }
