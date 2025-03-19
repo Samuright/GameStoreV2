@@ -36,6 +36,18 @@ public class UsersDTO {
         this.userImg = userImg;
     }
 
+    public UsersDTO(String username, String password, int userId, String email, String dateOfBirth, int isAdmin, double wallet, String userImg) {
+        this.username = username;
+        this.password = password;
+        this.userId = userId;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.isAdmin = isAdmin;
+        this.wallet = wallet;
+        this.userImg = userImg;
+    }
+    
+
     public String getUsername() {
         return username;
     }

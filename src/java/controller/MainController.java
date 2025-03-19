@@ -5,10 +5,12 @@
  */
 package controller;
 
+import dao.CouponsDAO;
 import dao.GameDAO;
+import dao.GenreDAO;
 import dao.GenresDAO;
 import dao.UsersDAO;
-
+import dao.WishlistDAO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +18,9 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import model.GameDTO;
 import model.GenreDTO;
 import model.UsersDTO;
+import model.WishlistDTO;
 
 /**
  *
@@ -37,57 +43,108 @@ public class MainController extends HttpServlet {
     private static final String GAME_MANAGEMENT_PAGE = "gameManagement.jsp";
     private static final String USER_PAGE = "userPage.jsp";
     private static final String EDIT_USER_PAGE = "editUser.jsp";
-
+    private static final String WISHLIST_PAGE = "wishlist.jsp";
+    private static final String SHOPPING_CART_PAGE = "shoppingCart.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = LOGIN_PAGE;
         String action = request.getParameter("action");
+
+        HttpSession session = request.getSession(false);
+        if (!"login".equals(action)) {
+            if (session == null || session.getAttribute("user") == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+        }
         try {
             if (action == null) {
-                url = LOGIN_PAGE;
-            } else {
-                switch (action) {
-                    case "login":
-                        url = processLogin(request, response);
-                        break;
-                    case "logout":
-                        url = processLogout(request, response);
-                        break;
-                    case "register":
+                action = "";
+            }
+            switch (action) {
+                case "login":
+                    url = processLogin(request, response);
+                    break;
+                case "logout":
+                    url = processLogout(request, response);
+                    break;
+                case "register":
 
-                        url = processRegister(request,response);
-                        break;                    
-                    case "detail":
-                        url = processGameDetail(request, response);
-                        break;
-                    case "listUser":
-                        url = processListUser(request, response);
-                        break;
+                    url = processRegister(request, response);
+                    break;
+                case "detail":
+                    url = processGameDetail(request, response);
+                    break;
+                case "listUser":
+                    url = processListUser(request, response);
+                    break;
+                case "editUser":
+                    url = processUserEdit(request, response);
+                    break;
+                case "update":
+                    url = processUpdateUser(request, response);
+                    break;
+                case "loadtop5":
+                    processTop5Sell(request, response);
+                    url = "top5.jsp";
+                    break;
+                case "":
+                case "list":
+                    handleList(request, response);
 
-                    case "editUser":
-                        url = processUserEdit(request, response);
-                        break;
-                    case "update":
-                        url = processUpdateUser(request, response);
-                        break;
-                    case"loadtop5":
-                        processTop5Sell(request,response);
-                        url="top5.jsp";
-                        
-                    default: 
-                }
+                    break;
+                case "cartList":
+                    handleCartList(request, response);
+
+                    break;
+                case "addToCart":
+                    handleAddToCart(request, response);
+
+                    break;
+                case "delete":
+                    handleCartDelete(request, response);
+
+                    break;
+                case "quantity":
+                    handleQuantity(request, response);
+
+                    break;
+                case "applyCoupon":
+                    handleApplyCoupon(request, response);
+
+                    break;
+                case "addToWishlist":
+                    handleAddToWishlist(request, response);
+
+                    break;
+                case "wishlistList":
+                    handlewishlistList(request, response);
+
+                    break;
+                case "wishlistDelete":
+                    handlewishlistDelete(request, response);
+
+                    break;
+                case "updateQuantity":
+                    handlewishlistQuantity(request, response);
+
+                    break;
+
+                default:
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
+
         }
     }
 
-   protected String processLogin(HttpServletRequest request, HttpServletResponse response) {
+    protected String processLogin(HttpServletRequest request, HttpServletResponse response) {
         String url = LOGIN_PAGE;
         String title = "";
         String username = request.getParameter("txtmail");
@@ -100,8 +157,17 @@ public class MainController extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 url = processBestSeller(request, response);
+                try {
+                    handleList(request, response); // Set full game list and forward
+                } catch (ServletException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return null;
             } else {
                 request.setAttribute("ERROR", "Email or password invalid!");
+
             }
         }
         return url;
@@ -119,7 +185,7 @@ public class MainController extends HttpServlet {
     }
 
     protected String processRegister(HttpServletRequest request, HttpServletResponse response) {
-        String url = REGISTER_PAGE;
+        String url = REGISTSER_PAGE;
         String email = request.getParameter("txtmail");
         String username = request.getParameter("txtusername");
         String password = request.getParameter("txtpassword");
@@ -154,7 +220,7 @@ public class MainController extends HttpServlet {
             }
         } else {
             request.setAttribute("ERROR", "Password not match!");
-            url = REGISTER_PAGE;
+            url = REGISTSER_PAGE;
         }
 
         return url;
@@ -172,12 +238,11 @@ public class MainController extends HttpServlet {
         } else {
             request.setAttribute("ERROR", "User empty!");
 
-
         }
         return url;
     }
 
-    protected String processUserEdit(HttpServletRequest request, HttpServletResponse response){
+    protected String processUserEdit(HttpServletRequest request, HttpServletResponse response) {
         String oldMail = request.getParameter("oldEmail");
         UsersDTO user = new UsersDTO();
         UsersDAO d = new UsersDAO();
@@ -185,7 +250,7 @@ public class MainController extends HttpServlet {
         request.setAttribute("userToUpdate", user);
         return "editUser.jsp";
     }
-    
+
     protected String processUpdateUser(HttpServletRequest request, HttpServletResponse response) {
         String url = USER_PAGE;
         String date = request.getParameter("date");
@@ -206,21 +271,21 @@ public class MainController extends HttpServlet {
         user.setIsBlocked(user.getIsBlocked());
         user.setIsAdmin(user.getIsAdmin());
         user.setUserImg(user.getUserImg());
-        
-        if(!password.equals(checkPassword)) {
+
+        if (!password.equals(checkPassword)) {
             url = processUserEdit(request, response);
             request.setAttribute("ERROR", "Password not match!");
             return url;
         }
-        
-        if(d.updateUser(user, oldMail)){
+
+        if (d.updateUser(user, oldMail)) {
             url = processListUser(request, response);
         }
-        
+
         return url;
     }
-    
-    protected String processBestSeller(HttpServletRequest request, HttpServletResponse response){
+
+    protected String processBestSeller(HttpServletRequest request, HttpServletResponse response) {
         String url = LOGIN_PAGE;
         ArrayList<GameDTO> list = new ArrayList<>();
         GameDAO d = new GameDAO();
@@ -248,9 +313,8 @@ public class MainController extends HttpServlet {
 
         return url;
     }
-    
-    
-    protected String processGameList(HttpServletRequest request, HttpServletResponse response){
+
+    protected String processGameList(HttpServletRequest request, HttpServletResponse response) {
         String title = "";
         String url = LOGIN_PAGE;
         GameDAO d = new GameDAO();
@@ -322,7 +386,7 @@ public class MainController extends HttpServlet {
                 request.setAttribute("NOTI", "Phải chọn ít nhất một thể loại!");
                 return url;
             }
-            
+
             String priceStr = request.getParameter("price");
             double price;
             try {
@@ -379,7 +443,6 @@ public class MainController extends HttpServlet {
             GenreDAO genreDAO = new GenreDAO();
             request.setAttribute("genreList", genreDAO.getAllgenre());
 
-
         } catch (Exception e) {
             request.setAttribute("NOTI", "Lỗi: " + e.getMessage());
             e.printStackTrace();
@@ -387,6 +450,315 @@ public class MainController extends HttpServlet {
         return url;
     }
 
+    protected void handleList(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+
+        GameDAO dao = new GameDAO();
+        List<GameDTO> list = dao.list();
+        request.setAttribute("gameslist", list);
+
+        request.getRequestDispatcher("homePage.jsp").forward(request, response);
+    }
+
+    protected void handleCartList(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        GameDAO gameDAO = new GameDAO();
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        }
+
+        if (action.equals("cartList")) {
+            List<GameDTO> shoppingCartList = (List<GameDTO>) session.getAttribute("shoppingCartList");
+
+            if (shoppingCartList == null) {
+                shoppingCartList = new ArrayList<>();
+                session.setAttribute("shoppingCartList", shoppingCartList);
+            }
+
+            request.setAttribute("shoppingCartList", shoppingCartList);
+            request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
+        }
+    }
+
+    protected void handleAddToCart(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        GameDAO gameDAO = new GameDAO();
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        }
+
+        if (action.equals("addToCart")) {
+            List<GameDTO> shoppingCartList = (List<GameDTO>) session.getAttribute("shoppingCartList");
+
+            if (shoppingCartList == null) {
+                shoppingCartList = new ArrayList<>();
+            }
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            GameDTO games = GameDAO.load(id);
+
+            if (games != null && shoppingCartList.stream().noneMatch(g -> g.getGameId() == games.getGameId())) { //de check xem co trung id trong shopping cart, neu co thi chi dc add 1 lan
+                games.setOriginalPrice(games.getPrice());
+                shoppingCartList.add(games);
+            }
+            List<GameDTO> list = GameDAO.list();
+            session.setAttribute("shoppingCartList", shoppingCartList);
+            request.setAttribute("gameslist", list);
+            request.getRequestDispatcher("homePage.jsp").forward(request, response);
+
+        }
+    }
+
+    protected void handleCartDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        GameDAO gameDAO = new GameDAO();
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        } else if (action.equals("delete")) {
+            List<GameDTO> shoppingCartList = (List<GameDTO>) session.getAttribute("shoppingCartList");
+
+            if (shoppingCartList == null) {
+                shoppingCartList = new ArrayList<>();
+            }
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            shoppingCartList.removeIf(game -> game.getGameId() == id); //xoa game co voi id
+            session.setAttribute("shoppingCartList", shoppingCartList);
+            request.setAttribute("shoppingCartList", shoppingCartList);
+            request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
+        }
+    }
+
+    protected void handleQuantity(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        GameDAO gameDAO = new GameDAO();
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        }
+
+        if (action.equals("quantity")) {
+            int gameId = Integer.parseInt(request.getParameter("id"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+            List<GameDTO> shoppingCartList = (List<GameDTO>) session.getAttribute("shoppingCartList");
+
+            if (shoppingCartList != null) {
+                for (GameDTO game : shoppingCartList) {
+                    if (game.getGameId() == gameId) {
+                        game.setQuantity(quantity); // Ensure GamesDTO has a setQuantity method
+                        break;
+                    }
+                }
+            }
+
+            session.setAttribute("shoppingCartList", shoppingCartList);
+            request.setAttribute("shoppingCartList", shoppingCartList);
+            request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
+        }
+    }
+
+    protected void handleApplyCoupon(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        GameDAO gameDAO = new GameDAO();
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        }
+
+        if (action.equals("applyCoupon")) {
+            String code = request.getParameter("code");
+            CouponsDAO dao = new CouponsDAO();
+
+            List<GameDTO> shoppingCartList = (List<GameDTO>) session.getAttribute("shoppingCartList");
+            boolean check = dao.validateCoupon(code);
+            if (!check) {
+                request.setAttribute("errorCode", "Code khong hop le hoac het hieu luc");
+                request.setAttribute("shoppingCartList", shoppingCartList);
+                request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
+                return;
+            } else {
+                int discount = dao.getDiscount(code);
+                for (GameDTO game : shoppingCartList) {
+                    double discountedPrice = game.getOriginalPrice() * (1 - discount / 100.0);
+                    game.setPrice(discountedPrice);
+                }
+                request.setAttribute("couponApplied", true);
+            }
+
+            session.setAttribute("shoppingCartList", shoppingCartList);
+            request.setAttribute("shoppingCartList", shoppingCartList);
+            request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
+        }
+    }
+
+    protected void handleAddToWishlist(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        }
+
+        if (action.equals("addToWishlist")) {
+            UsersDTO user = (UsersDTO) session.getAttribute("user");
+            int userId = user.getUserId();
+            int gameId = Integer.parseInt(request.getParameter("id"));
+            int quantity = 1;
+
+            WishlistDAO dao = new WishlistDAO();
+
+            if (dao.isGameInWishlist(userId, gameId)) {
+                request.setAttribute("wishlistError", "Game is already in wishlist");
+                GameDAO gameDAO = new GameDAO();
+                List<GameDTO> list = gameDAO.list();
+                request.setAttribute("gameslist", list);
+                request.getRequestDispatcher("homePage.jsp").forward(request, response);
+                return;
+            } else {
+                boolean checkAdd = dao.insert(userId, gameId, quantity);
+                if (!checkAdd) {
+                    request.setAttribute("wishlistError", "Failed to add game to wishlist.");
+                } else {
+                    request.setAttribute("wishlistError", "Game added to wishlist successfully!");
+                }
+            }
+            GameDAO gameDAO = new GameDAO();
+            List<GameDTO> list = gameDAO.list();
+            request.setAttribute("gameslist", list);
+            request.getRequestDispatcher("homePage.jsp").forward(request, response);
+        }
+    }
+
+    protected void handlewishlistList(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        }
+
+        if (action.equals("wishlistList")) {
+            UsersDTO user = (UsersDTO) session.getAttribute("user");
+            int userId = user.getUserId();
+
+            WishlistDAO wishlistDAO = new WishlistDAO();
+            List<WishlistDTO> wishlist = wishlistDAO.list();
+
+            List<WishlistDTO> userWishlist = new ArrayList<>();
+            for (WishlistDTO item : wishlist) {
+                if (item.getUserId() == userId) {
+                    userWishlist.add(item);
+                }
+            }
+            GameDAO gameDAO = new GameDAO();
+            List<GameDTO> gamesList = new ArrayList<>();
+            for (WishlistDTO item : userWishlist) {
+                GameDTO game = gameDAO.load(item.getGameId());
+                if (game != null) {
+                    gamesList.add(game); // Add game details to gamesList
+                }
+            }
+            request.setAttribute("gamesList", gamesList);
+            request.setAttribute("wishlistGames", userWishlist);
+            request.getRequestDispatcher("wishlist.jsp").forward(request, response);
+        }
+    }
+
+    protected void handlewishlistDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        GameDAO gameDAO = new GameDAO();
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        }
+        if (action.equals("wishlistDelete")) {
+            WishlistDAO dao = new WishlistDAO();
+            int cartId = Integer.parseInt(request.getParameter("cartId"));
+            dao.delete(cartId);
+
+            UsersDTO user = (UsersDTO) session.getAttribute("user");
+            int userId = user.getUserId();
+
+            List<WishlistDTO> wishlist = dao.list();
+            List<WishlistDTO> userWishlist = new ArrayList<>();
+            for (WishlistDTO item : wishlist) {
+                if (item.getUserId() == userId) {
+                    userWishlist.add(item);
+                }
+            }
+
+            List<GameDTO> gamesList = new ArrayList<>();
+            for (WishlistDTO item : userWishlist) {
+                GameDTO game = gameDAO.load(item.getGameId());
+                if (game != null) {
+                    gamesList.add(game);
+                }
+            }
+
+            request.setAttribute("gamesList", gamesList);
+            request.setAttribute("wishlistGames", userWishlist);
+            request.getRequestDispatcher("wishlist.jsp").forward(request, response);
+        }
+    }
+
+    protected void handlewishlistQuantity(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        GameDAO gameDAO = new GameDAO();
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return;
+        }
+        if (action.equals("updateQuantity")) {
+            int cartId = Integer.parseInt(request.getParameter("cartId"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+            WishlistDAO dao = new WishlistDAO();
+            dao.updateQuantity(cartId, quantity);
+
+            UsersDTO user = (UsersDTO) session.getAttribute("user");
+            int userId = user.getUserId();
+
+            List<WishlistDTO> wishlist = dao.list();
+            List<WishlistDTO> userWishlist = new ArrayList<>();
+            for (WishlistDTO item : wishlist) {
+                if (item.getUserId() == userId) {
+                    userWishlist.add(item);
+                }
+            }
+
+            List<GameDTO> gamesList = new ArrayList<>();
+            for (WishlistDTO item : userWishlist) {
+                GameDTO game = gameDAO.load(item.getGameId());
+                if (game != null) {
+                    gamesList.add(game);
+                }
+            }
+
+            request.setAttribute("gamesList", gamesList);
+            request.setAttribute("wishlistGames", userWishlist);
+            request.getRequestDispatcher("wishlist.jsp").forward(request, response);
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

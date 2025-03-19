@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.GameDTO;
@@ -37,7 +38,7 @@ public class GameDAO {
                 if (table != null) {
                     while (table.next()) {
                         title = table.getString("title");
-                        String gameId = table.getString("gameId");
+                        int gameId = table.getInt("gameId");
                         String description = table.getString("description");
                         double price = table.getDouble("price");
                         String publisher = table.getString("publisher");
@@ -76,7 +77,7 @@ public class GameDAO {
                 ResultSet table = st.executeQuery();
                 if (table != null) {
                     while (table.next()) {
-                        String gameId = table.getString("gameId");
+                        int gameId = table.getInt("gameId");
                         String title = table.getString("title");
                         String description = table.getString("description");
                         double price = table.getDouble("price");
@@ -84,7 +85,7 @@ public class GameDAO {
                         Date releaseDate = table.getDate("releaseDate");
                         String coverImageUrl = table.getString("coverImageUrl");
                         int isDlc = table.getInt("isDlc");
-                        GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl,isDlc);
+                        GameDTO game = new GameDTO(gameId, title, description, price, publisher, releaseDate, coverImageUrl, isDlc);
                         listGame.add(game);
                     }
                 }
@@ -95,7 +96,8 @@ public class GameDAO {
 
         return listGame;
     }
-     public ArrayList<GameDTO> listBestSeller() {
+
+    public ArrayList<GameDTO> listBestSeller() {
         ArrayList<GameDTO> listGame = new ArrayList<>();
         Connection cn = null;
         try {
@@ -110,11 +112,11 @@ public class GameDAO {
                 if (table != null) {
                     while (table.next()) {
                         String title = table.getString("title");
-                        String gameId = table.getString("gameId");
+                        int gameId = table.getInt("gameId");
                         String description = table.getString("description");
-                        String price = table.getString("price");
+                        double price = table.getDouble("price");
                         String publisher = table.getString("publisher");
-                        String releaseDate = table.getString("releaseDate") + "";
+                        Date releaseDate = table.getDate("releaseDate");
                         String coverImageUrl = table.getString("coverImageUrl");
                         String trailerUrl = table.getString("trailerUrl");
                         int isDlc = table.getInt("isDlc");
@@ -195,5 +197,75 @@ public class GameDAO {
             }
         }
         return success;
+    }
+
+    public static List<GameDTO> list() {
+        List<GameDTO> gameList = new ArrayList<GameDTO>();
+        try {
+            Connection con = DBUtils.getConnection();
+            String sql = "SELECT gameId, title, description, price, publisher, releaseDate, coverImageUrl, isDlc FROM games";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int gameId = rs.getInt("gameId");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                String publisher = rs.getString("publisher");
+                Date releaseDate = rs.getDate("releaseDate");
+                String coverImageUrl = rs.getString("coverImageUrl");
+                int isDlc = rs.getInt("isDlc");
+
+                GameDTO games = new GameDTO();
+                games.setTitle(title);
+                games.setDescription(description);
+                games.setGameId(gameId);
+                games.setPrice(price);
+                games.setPublisher(publisher);
+                games.setReleaseDate(releaseDate);
+                games.setCoverImageUrl(coverImageUrl);
+                games.setIsDlc(isDlc);
+
+                gameList.add(games);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("Error in servlet. Details:" + ex.getMessage());
+            ex.printStackTrace();
+        }
+        return gameList;
+    }
+
+    public static GameDTO load(int id) {
+        String sql = "SELECT title, price, coverImageUrl from games where gameId = ?";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String title = rs.getString("title");
+                double price = rs.getDouble("price");
+                String coverImageUrl = rs.getString("coverImageUrl");
+                GameDTO game = new GameDTO();
+
+                game.setGameId(id);
+                game.setTitle(title);
+                game.setPrice(price);
+                game.setCoverImageUrl(coverImageUrl);
+
+                return game;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Query Student error!" + ex.getMessage());
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

@@ -27,9 +27,9 @@ public class UsersDAO {
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
-                String sql = " SELECT username, userId, dateOfBirth, isAdmin, userImg, isBlocked, wallet \n"
-                        + " FROM users \n"
-                        + " WHERE email = ? AND password = ? ";
+                String sql = " SELECT username, userId, dateOfBirth, isAdmin, userImg, wallet, isBlocked FROM users where email = ? and password = ?";
+ //                       + " FROM users \n"
+ //                       + " WHERE email = ? AND password = ? ";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, email);
                 st.setString(2, password);
@@ -40,7 +40,7 @@ public class UsersDAO {
                         int userId = table.getInt("userId");
                         String dob = table.getDate("dateOfBirth") + "";
                         int isAdmin = table.getInt("isAdmin");
-                        int isBlocked = table.getInt("isBlocked");
+                       int isBlocked = table.getInt("isBlocked");
                         double wallet = table.getDouble("wallet");
                         String userImg = table.getString("userImg");
                         user = new UsersDTO(username, password, userId, email, dob, isAdmin, isBlocked, wallet, userImg);
@@ -60,6 +60,39 @@ public class UsersDAO {
         }
         return user;
     }
+ /*       public UsersDTO checkLogin(String email, String password) {
+        UsersDTO rs = null;
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT username, userId, dateOfBirth, isAdmin, address FROM users where email = ? and password = ?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, email);
+                st.setString(2, password);
+                ResultSet table = st.executeQuery();
+                if(table != null){
+                    while(table.next()){
+                        String username = table.getString("username");
+                        String userId = table.getString("userId");
+                        String dob = table.getDate("dateOfBirth") + "";
+                        int isAdmin = table.getInt("isAdmin");
+                        String address = table.getString("address");
+                        rs = new UsersDTO(username, password, userId, email, dob, isAdmin, address);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try{
+                if(cn != null) cn.close();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return rs;
+    }*/
 
     public boolean addNewUser(UsersDTO user) {
         Connection cn = DBUtils.getConnection();

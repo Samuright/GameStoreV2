@@ -19,13 +19,13 @@ public class GameDTO implements Serializable {
     private String minSpec;
     private String maxSpec;
     private String screenshot;
-
+    private int quantity = 1;
+    private double originalPrice ;
 
     // Constructor mặc định
     public GameDTO() {
     }
 
-   
     public GameDTO(int gameId, String title, String description, double price, String publisher, Date releaseDate, String coverImageUrl, String trailerImageUrl, int isDlc, String platform, String platformLogo, String minSpec, String maxSpec, String screenshot) {
         this.gameId = gameId;
         this.title = title;
@@ -41,6 +41,29 @@ public class GameDTO implements Serializable {
         this.minSpec = minSpec;
         this.maxSpec = maxSpec;
         this.screenshot = screenshot;
+    }
+
+    public GameDTO(int gameId, String title, String description, double price, String publisher, Date releaseDate, String coverImageUrl, int isDlc) {
+        this.gameId = gameId;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.publisher = publisher;
+        this.releaseDate = releaseDate;
+        this.coverImageUrl = coverImageUrl;
+        this.isDlc = isDlc;
+    }
+
+    public GameDTO(int gameId, String title, String description, double price, String publisher, Date releaseDate, String coverImageUrl, String trailerImageUrl, int isDlc) {
+        this.gameId = gameId;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.publisher = publisher;
+        this.releaseDate = releaseDate;
+        this.coverImageUrl = coverImageUrl;
+        this.trailerImageUrl = trailerImageUrl;
+        this.isDlc = isDlc;
     }
 
     public int getGameId() {
@@ -79,7 +102,6 @@ public class GameDTO implements Serializable {
         this.publisher = publisher;
     }
 
-
     public Date getReleaseDate() {
         return releaseDate;
     }
@@ -88,7 +110,6 @@ public class GameDTO implements Serializable {
         this.releaseDate = releaseDate;
     }
 
-
     public String getCoverImageUrl() {
         return coverImageUrl;
     }
@@ -96,12 +117,15 @@ public class GameDTO implements Serializable {
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
     }
+
     public String getTrailerImageUrl() {
         return trailerImageUrl;
     }
+
     public void setTrailerImageUrl(String trailerImageUrl) {
         this.trailerImageUrl = trailerImageUrl;
     }
+
     public int getIsDlc() {
         return isDlc;
     }
@@ -150,4 +174,24 @@ public class GameDTO implements Serializable {
         this.screenshot = screenshot;
     }
 
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(double originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+    
 }

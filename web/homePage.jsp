@@ -4,6 +4,7 @@
     Author     : Quoc Bao
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="model.GameDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.UsersDTO"%>
@@ -103,7 +104,7 @@
             .bestseller-card:hover {
                 transform: translateY(-5px);
             }
-            
+
             .game-img {
                 width: 100%;
                 height: 100%;
@@ -209,7 +210,7 @@
                 border-radius: 8px 8px 0 0; /* Rounded corners on top only */
             }
 
-            
+
 
         </style>
     </head>
@@ -230,8 +231,8 @@
                     <div class="col-md-3">
                         <div class="d-flex justify-content-end gap-4">
                             <a href="#" title="Profile" class="text-white"><i class="fas fa-user"></i></a>
-                            <a href="#" title="Cart" class="text-white"><i class="fas fa-shopping-cart"></i></a>
-                            <a href="#" title="Wishlist" class="text-white"><i class="fas fa-heart"></i></a>
+                            <a href="MainController?action=cartList" title="Cart" class="text-white"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="MainController?action=wishlistList" title="Wishlist" class="text-white"><i class="fas fa-heart"></i></a>
                         </div>
                     </div>
                 </div>
@@ -256,6 +257,12 @@
             </div>
         </div>
 
+        <% if (request.getAttribute("wishlistError") != null) {%>
+        <div class="alert alert-danger">
+            <%= request.getAttribute("wishlistError")%>
+        </div>
+        <% } %>
+
         <!-- Featured Banner -->
         <div class="container mb-4">
             <div class="featured-banner">
@@ -263,145 +270,125 @@
             </div>
         </div>
 
- <!-- Best Sellers Section -->
-<div class="container mb-5">
-    <h2 class="section-title mb-4">BEST SELLERS</h2>
-
-    <div class="row">
-        <!-- First game - Dark Ages -->
-        <div class="col-md-3 mb-4">
-            <div class="bestseller-card">                                   
-                <div class="image-container">
-                    <img src="img/Doom.jpeg" alt="Dark Ages" class="game-img">
-                </div>                                        
-                <div class="game-details text-center">
-                    <div>
-                        <h3 class="game-title">Dark Ages</h3>
-                        <p class="game-price">$29.99</p>
-                    </div>
-                    <button class="btn btn-primary">BUY NOW</button>
-                </div>
-            </div>
-        </div>
-        <!-- Second game - Spider-Man 2 -->
-        <div class="col-md-3 mb-4">
-            <div class="bestseller-card">                                   
-                <div class="image-container">
-                    <img src="img/spiderman2.png" alt="Spider-Man 2" class="game-img">
-                </div>                                        
-                <div class="game-details text-center">
-                    <div>
-                        <h3 class="game-title">Spider-Man 2</h3>
-                        <p class="game-price">$59.99</p>
-                    </div>
-                    <button class="btn btn-primary">BUY NOW</button>
-                </div>
-            </div>
-        </div>
-        <!-- Third game - Dark Ages Expansion -->
-        <div class="col-md-3 mb-4">
-            <div class="bestseller-card">                                   
-                <div class="image-container">
-                    <img src="img/Doom.jpeg" alt="Dark Ages Expansion" class="game-img">
-                </div>                                        
-                <div class="game-details text-center">
-                    <div>
-                        <h3 class="game-title">Dark Ages Expansion</h3>
-                        <p class="game-price">$19.99</p>
-                    </div>
-                    <button class="btn btn-primary">BUY NOW</button>
-                </div>
-            </div>
-        </div>
-        <!-- Fourth game - Dark Ages Deluxe -->
-        <div class="col-md-3 mb-4">
-            <div class="bestseller-card">                                   
-                <div class="image-container">
-                    <img src="img/Doom.jpeg" alt="Dark Ages Deluxe" class="game-img">
-                </div>                                        
-                <div class="game-details text-center">
-                    <div>
-                        <h3 class="game-title">Dark Ages Deluxe</h3>
-                        <p class="game-price">$39.99</p>
-                    </div>
-                    <button class="btn btn-primary">BUY NOW</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
- <!-- Coming Soon Section -->
+        <!-- Best Sellers Section -->
         <div class="container mb-5">
-            <h2 class="section-title mb-4">Coming Soon</h2>
+            <h2 class="section-title mb-4">BEST SELLERS</h2>
 
             <div class="row">
-                <!-- All four games in one row using Bootstrap's grid system -->
-                <!--first game-->
+                <!-- First game - Dark Ages -->
                 <div class="col-md-3 mb-4">
                     <div class="bestseller-card">                                   
                         <div class="image-container">
-                            <img src="img/Doom.jpeg" alt="Southwest" class="game-img">
+                            <img src="img/Doom.jpeg" alt="Dark Ages" class="game-img">
                         </div>                                        
                         <div class="game-details text-center">
                             <div>
-                                
-                                <h3 class="game-title">Southwest</h3>
-                                
+                                <h3 class="game-title">Dark Ages</h3>
+                                <p class="game-price">$29.99</p>
                             </div>
-                            <button class="btn btn-primary">ADD TO WISHLIST</button>
+                            <button class="btn btn-primary">BUY NOW</button>
                         </div>
                     </div>
                 </div>
-                <!--Second game-->
+                <!-- Second game - Spider-Man 2 -->
                 <div class="col-md-3 mb-4">
                     <div class="bestseller-card">                                   
                         <div class="image-container">
-                            <img src="img/spiderman2.png" alt="Southwest" class="game-img">
+                            <img src="img/spiderman2.png" alt="Spider-Man 2" class="game-img">
                         </div>                                        
                         <div class="game-details text-center">
                             <div>
-                                
-                                <h3 class="game-title">Southwest</h3>
-                               
+                                <h3 class="game-title">Spider-Man 2</h3>
+                                <p class="game-price">$59.99</p>
                             </div>
-                            <button class="btn btn-primary">ADD TO WISHLIST</button>
+                            <button class="btn btn-primary">BUY NOW</button>
                         </div>
                     </div>
                 </div>
-                <!--Third game-->
+                <!-- Third game - Dark Ages Expansion -->
                 <div class="col-md-3 mb-4">
                     <div class="bestseller-card">                                   
                         <div class="image-container">
-                            <img src="img/Doom.jpeg" alt="Southwest" class="game-img">
+                            <img src="img/Doom.jpeg" alt="Dark Ages Expansion" class="game-img">
                         </div>                                        
                         <div class="game-details text-center">
                             <div>
-                                
-                                <h3 class="game-title">Southwest</h3>
-                                
+                                <h3 class="game-title">Dark Ages Expansion</h3>
+                                <p class="game-price">$19.99</p>
                             </div>
-                            <button class="btn btn-primary">ADD TO WISHLIST</button>
+                            <button class="btn btn-primary">BUY NOW</button>
                         </div>
                     </div>
                 </div>
-                <!--fourth game-->
+                <!-- Fourth game - Dark Ages Deluxe -->
                 <div class="col-md-3 mb-4">
                     <div class="bestseller-card">                                   
                         <div class="image-container">
-                            <img src="img/Doom.jpeg" alt="Southwest" class="game-img">
+                            <img src="img/Doom.jpeg" alt="Dark Ages Deluxe" class="game-img">
                         </div>                                        
                         <div class="game-details text-center">
                             <div>
-                                
-                                <h3 class="game-title">Southwest</h3>
-                                
+                                <h3 class="game-title">Dark Ages Deluxe</h3>
+                                <p class="game-price">$39.99</p>
                             </div>
-                            <button class="btn btn-primary">ADD TO WISHLIST</button>
+                            <button class="btn btn-primary">BUY NOW</button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+
+        <!-- Games Section / Replace coming soon Section -->
+        <div class="container mb-5">
+            <h2 class="section-title mb-4">COMING SOON</h2>
+
+            <div class="row justify-content-center"> <!-- Center the cards -->
+                <%
+                    List<GameDTO> list = (List<GameDTO>) request.getAttribute("gameslist");
+                    if (list == null) {
+                        out.println("<div class='alert alert-warning'>gameslist is null</div>");
+                    } else if (list.isEmpty()) {
+                        out.println("<div class='alert alert-warning'>No games available</div>");
+                    } else {
+                        // Limit to 4 games using subList or a counter
+                        int maxGames = Math.min(list.size(), 8); // Display up to 8 games
+                        for (int i = 0; i < maxGames; i++) {
+                            GameDTO games = list.get(i);
+                            pageContext.setAttribute("games", games);
+                %>
+                <div class="col-md-3 col-sm-6 mb-4"> <!-- Adjusted for responsiveness -->
+                    <div class="bestseller-card">
+                        <div class="image-container">
+                            <img src="<%= games.getCoverImageUrl()%>" alt="<%= games.getTitle()%>" class="game-img">
+                        </div>
+                        <div class="game-details text-center">
+                            <div>
+                                <h3 class="game-title">
+                                    <a href="MainController?id=${games.gameId}" class="text-white text-decoration-none">
+                                        ${games.title}
+                                    </a>
+                                </h3>
+                            </div>
+                            <div class="d-flex flex-column gap-2">
+                                <form action="MainController" method="POST">
+                                    <input name="action" value="addToCart" type="hidden">
+                                    <input type="hidden" name="id" value="${games.gameId}">
+                                    <button type="submit" class="btn btn-primary">ADD TO CART</button>
+                                </form>
+                                <form action="MainController" method="POST">
+                                    <input name="action" value="addToWishlist" type="hidden">
+                                    <input type="hidden" name="id" value="${games.gameId}">
+                                    <button type="submit" class="btn btn-primary">ADD TO WISHLIST</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%
+                        }
+                    }
+                %>
             </div>
         </div>
 
